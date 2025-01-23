@@ -1,0 +1,27 @@
+.Navbar{
+    display: flex;
+    height: 64px;
+    background-color: #333;
+    justify-content: space-between;
+    padding: 0px 15px;
+    align-items: center;
+}
+
+
+
+.Menu{
+    display: flex;
+    justify-content: space-around;
+    width: 40%;
+}
+
+
+h1 {
+    font-size: 15px;
+    color: white;
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+}

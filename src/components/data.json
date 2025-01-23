@@ -1,0 +1,14 @@
+{
+    "banks": [
+        {"id":1, "name": "ZenithXchange" },
+        {"id":2, "name": "FcmbAdvice"}
+
+    ],
+    "status":[
+        {"code": "00", "message": "Successful"},
+        {"code": "01", "message": "Failing with NULL"},
+        {"code":"06", "message": "Error"},
+        {"code": "66", "message": "Call acquirer security"},
+
+    ]
+}
