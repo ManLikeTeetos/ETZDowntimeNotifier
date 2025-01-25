@@ -1,7 +1,21 @@
 {
     "banks": [
         {"id":1, "bankname": "Zenith", "type":"FT", "downtime":"00:00", "reason":"Transaction Successful", "status": "Node up"},
-        {"id":2, "bankname": "FcmbAdvice","type":"FT", "downtime":"00:00", "reason":"Transaction Successful", "status": "Node up"}
+        {"id":2, "bankname": "FcmbAdvice","type":"FT", "downtime":"00:00", "reason":"Transaction Successful", "status": "Node up"},
+        {"id":3, "bankname": "Polaris", "type":"FT", "downtime":"00:00", "reason":"Transaction Successful", "status": "Node up"},
+        {"id":4, "bankname": "Access","type":"FT", "downtime":"00:00", "reason":"Transaction Successful", "status": "Node up"},
+        {"id":5, "bankname": "Providus", "type":"FT", "downtime":"00:00", "reason":"Transaction Successful", "status": "Node up"},
+        {"id":6, "bankname": "FBN","type":"FT", "downtime":"00:00", "reason":"Transaction Successful", "status": "Node up"},
+        {"id":7, "bankname": "Unity", "type":"FT", "downtime":"00:00", "reason":"Transaction Successful", "status": "Node up"},
+        {"id":8, "bankname": "GTCO","type":"FT", "downtime":"00:00", "reason":"Transaction Successful", "status": "Node up"},
+        {"id":9, "bankname": "Union", "type":"FT", "downtime":"00:00", "reason":"Transaction Successful", "status": "Node up"},
+        {"id":10, "bankname": "Wema","type":"FT", "downtime":"00:00", "reason":"Transaction Successful", "status": "Node up"},
+        {"id":11, "bankname": "Fidelity", "type":"FT", "downtime":"00:00", "reason":"Transaction Successful", "status": "Node up"},
+        {"id":12, "bankname": "Ecobank","type":"FT", "downtime":"00:00", "reason":"Transaction Successful", "status": "Node up"},
+        {"id":13, "bankname": "Sterling", "type":"FT", "downtime":"00:00", "reason":"Transaction Successful", "status": "Node up"},
+        {"id":14, "bankname": "Jaiz","type":"FT", "downtime":"00:00", "reason":"Transaction Successful", "status": "Node up"},
+        {"id":15, "bankname": "Stanbic", "type":"FT", "downtime":"00:00", "reason":"Transaction Successful", "status": "Node up"},
+        {"id":16, "bankname": "TAj","type":"FT", "downtime":"00:00", "reason":"Transaction Successful", "status": "Node up"}
     ],
     "status":[
         {"code": "suc", "message": "Successful"},

@@ -6,51 +6,35 @@ import Down from "../images/down.png";
 import UP from "../images/up.png";
 
 const Row = ({ id, logo, name, type, downtime, reason, resolution }) => {
-    const formatTimeDifference = (downtime) => {
-       // if (!downtime || downtime === "00:00") return "0";
-      
-        // Split the downtime into hours and minutes
-        const timeParts = downtime.split(":").map(Number);
-        if (timeParts.length < 2 || timeParts.length > 3) {
-          console.error(`Invalid downtime format: ${downtime}`);
-          return "Invalid format";
-        }
-      
-        const [hours, minutes, seconds = 0] = timeParts;
-      
-        // Create a date object for the current time
-        const currentTime = new Date();
-      
-        // Create a date object for the downtime (on the same day as current time)
-        const downTimeDate = new Date(currentTime);
-        downTimeDate.setHours(hours, minutes, seconds, 0);
-      
-        // If downtime is in the future (e.g., past midnight), assume it started the previous day
-        if (downTimeDate > currentTime) {
-          downTimeDate.setDate(downTimeDate.getDate() - 1);
-        }
-      
-        // Calculate the time difference in milliseconds
-        const timeDifferenceMilliseconds = currentTime - downTimeDate;
-      
-        // Convert milliseconds to hours and minutes
-        const totalMinutes = Math.floor(timeDifferenceMilliseconds / (1000 * 60));
-        const totalHours = Math.floor(totalMinutes / 60);
-        const remainingMinutes = totalMinutes % 60;
-      
-        // Format the result in human-readable terms
-        if (totalHours > 0) {
-          return remainingMinutes > 0
-            ? `${totalHours}hrs ${remainingMinutes}minutes`
-            : `${totalHours}hrs`;
-        } else {
-          return `${totalMinutes}minutes`;
-        }
-      };
-      
-      
-      
-      
+  const formatTimeDifference = (downtime) => {
+    const timeParts = downtime.split(":").map(Number);
+    if (timeParts.length < 2 || timeParts.length > 3) {
+      return "Invalid format";
+    }
+
+    const [hours, minutes, seconds = 0] = timeParts;
+
+    const currentTime = new Date();
+    const downTimeDate = new Date(currentTime);
+    downTimeDate.setHours(hours, minutes, seconds, 0);
+
+    if (downTimeDate > currentTime) {
+      downTimeDate.setDate(downTimeDate.getDate() - 1);
+    }
+
+    const timeDifferenceMilliseconds = currentTime - downTimeDate;
+    const totalMinutes = Math.floor(timeDifferenceMilliseconds / (1000 * 60));
+    const totalHours = Math.floor(totalMinutes / 60);
+    const remainingMinutes = totalMinutes % 60;
+
+    if (totalHours > 0) {
+      return remainingMinutes > 0
+        ? `${totalHours}hrs ${remainingMinutes}minutes`
+        : `${totalHours}hrs`;
+    } else {
+      return `${totalMinutes}minutes`;
+    }
+  };
 
   return (
     <tr key={id}>
@@ -75,6 +59,8 @@ function Dashboard() {
   const [banks, setBanks] = useState([]);
   const [downBanksData, setDownBanksData] = useState([]);
   const [upBanksData, setUpBanksData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 7; // Number of items per page for upbanks
 
   useEffect(() => {
     const savedBanks = JSON.parse(localStorage.getItem("banks"));
@@ -82,18 +68,29 @@ function Dashboard() {
     const savedUpBanks = JSON.parse(localStorage.getItem("upbanks")) || [];
 
     if (!savedBanks) {
-      // Initialize localStorage with data from `data.json` if `banks` key doesn't exist
       localStorage.setItem("banks", JSON.stringify(data.banks));
-      localStorage.setItem("upbanks", JSON.stringify(data.banks)); // Initially all banks are "up"
+      localStorage.setItem("upbanks", JSON.stringify(data.banks));
       setBanks(data.banks);
       setUpBanksData(data.banks);
     } else {
-      // Load existing data from localStorage
       setBanks(savedBanks);
       setDownBanksData(savedDownBanks);
       setUpBanksData(savedUpBanks);
     }
-  }, []); // Run only on component mount
+  }, []);
+
+  const paginatedUpBanks = upBanksData.slice(
+    currentPage * itemsPerPage,
+    currentPage * itemsPerPage + itemsPerPage
+  );
+
+  const handlePageChange = (direction) => {
+    if (direction === "next" && (currentPage + 1) * itemsPerPage < upBanksData.length) {
+      setCurrentPage(currentPage + 1);
+    } else if (direction === "prev" && currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   return (
     <div>
@@ -152,8 +149,8 @@ function Dashboard() {
               </tr>
             </thead>
             <tbody>
-              {upBanksData.length > 0 ? (
-                upBanksData.map((row) => (
+              {paginatedUpBanks.length > 0 ? (
+                paginatedUpBanks.map((row) => (
                   <Row
                     key={row.id}
                     logo={UP}
@@ -171,6 +168,26 @@ function Dashboard() {
               )}
             </tbody>
           </table>
+
+          {/* Pagination Controls */}
+          <div className="pagination">
+            <button
+              onClick={() => handlePageChange("prev")}
+              disabled={currentPage === 0}
+            >
+              Previous
+            </button>
+            <span>
+              Page {currentPage + 1} of{" "}
+              {Math.ceil(upBanksData.length / itemsPerPage)}
+            </span>
+            <button
+              onClick={() => handlePageChange("next")}
+              disabled={(currentPage + 1) * itemsPerPage >= upBanksData.length}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </div>
