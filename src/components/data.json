@@ -1,11 +1,10 @@
 {
     "banks": [
-        {"id":1, "bankname": "Zenith", "type":"FT", "downtime":"00:00:00", "reason":"Transaction Successful", "status": "Node up"},
-        {"id":2, "bankname": "FcmbAdvice","type":"FT", "downtime":"00:00:00", "reason":"Transaction Successful", "status": "Node up"}
-
+        {"id":1, "bankname": "Zenith", "type":"FT", "downtime":"00:00", "reason":"Transaction Successful", "status": "Node up"},
+        {"id":2, "bankname": "FcmbAdvice","type":"FT", "downtime":"00:00", "reason":"Transaction Successful", "status": "Node up"}
     ],
     "status":[
-        {"code": "00", "message": "Successful"},
+        {"code": "suc", "message": "Successful"},
         {"code": "01", "message": "Failing with NULL"},
         {"code":"06", "message": "Error"},
         {"code": "66", "message": "Call acquirer security"}
