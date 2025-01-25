@@ -1,0 +1,44 @@
+.Dashboard {
+    padding: 40px 60px;
+    font-family: Roboto;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th, td {
+    border: 1px solid transparent;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: transparent;
+    border-top: 1px solid black;
+    border-bottom: 1px solid #dcdcdc;;
+  }
+  
+  tr {
+    height: 60px;
+  }
+
+  .image-cell {
+    display: flex;
+    align-items: center;
+  }
+
+
+  .status-bar {
+    height: 10px;
+    background-color: #eee;
+    border-radius: 5px;
+    position: relative;
+  }
+  
+  .status-bar-fill {
+    height: 100%;
+    background-color: #007bff;
+    border-radius: 5px;
+  }
