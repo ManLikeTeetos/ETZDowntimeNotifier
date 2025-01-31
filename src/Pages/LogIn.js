@@ -37,7 +37,7 @@ const LogIn = () => {
         if (response.ok && data.message === "Login Successful") {
           // Registration was successful, navigate to the dashboard
           setSuccess("Login Successful")
-          navigate("/");
+          navigate("/dashboard");
         } else {
           // Handle failure (invalid input, user already exists, etc.)
          
@@ -61,9 +61,9 @@ const LogIn = () => {
       {/* Right Form Section */}
       <div className="signin-form">
         <h2 className="form-title">Welcome!</h2>
-        <div className="center-align">
+        {/* <div className="center-align">
           <span>"You have been logged out successfully"</span>
-        </div>
+        </div> */}
         <form className="register-form" id="login-form" onSubmit={handleSubmit}>
         <div className="form-group-login">
           <Email className="icon" />

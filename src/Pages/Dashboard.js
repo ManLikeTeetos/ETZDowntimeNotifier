@@ -5,7 +5,7 @@ import data from "../components/data.json";
 import Down from "../images/down.png";
 import UP from "../images/up.png";
 
-const Row = ({ id, logo, name, type, downtime, reason, resolution }) => {
+const Row = ({ id, logo, name, type, downtime, status, reason, resolution }) => {
   const formatTimeDifference = (downtime) => {
     const timeParts = downtime.split(":").map(Number);
     if (timeParts.length < 2 || timeParts.length > 3) {
@@ -49,6 +49,7 @@ const Row = ({ id, logo, name, type, downtime, reason, resolution }) => {
       <td>{type}</td>
       <td>{downtime === "00:00" ? "N/A" : downtime}</td>
       <td>{formatTimeDifference(downtime)}</td>
+      <td>{status}</td>
       <td>{reason}</td>
       <td>{resolution}</td>
     </tr>
@@ -107,6 +108,7 @@ function Dashboard() {
                 <th>Type</th>
                 <th>Down Since</th>
                 <th>Down Time</th>
+                <th>Status</th>
                 <th>Reason</th>
                 <th>Resolution</th>
               </tr>
@@ -120,8 +122,9 @@ function Dashboard() {
                     name={row.bankname}
                     type={row.type}
                     downtime={row.downtime}
+                    status={row.status}
                     reason={row.reason}
-                    resolution={row.status}
+                    resolution={row.resolution}
                   />
                 ))
               ) : (
@@ -144,6 +147,7 @@ function Dashboard() {
                 <th>Type</th>
                 <th>Up Since</th>
                 <th>Up Time</th>
+                <th>Status</th>
                 <th>Reason</th>
                 <th>Resolution</th>
               </tr>
@@ -157,8 +161,9 @@ function Dashboard() {
                     name={row.bankname}
                     type={row.type}
                     downtime={row.downtime}
+                    status={row.status}
                     reason={row.reason}
-                    resolution={row.status}
+                    resolution={row.resolution}
                   />
                 ))
               ) : (

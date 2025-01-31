@@ -10,6 +10,7 @@ function Update(){
     const [selectedError, setSelectedError] = useState("");
     const [time, setTime] = useState({hours: "00", minutes: "00"});
     const [resolution, setResolution] = useState("NIP");
+    const [reason, setReason] = useState("None");
    
  
 
@@ -41,8 +42,9 @@ function Update(){
                 bankname: selectedBank,
                 type: type,
                 downtime: "00:00", // Default downtime
+                status:"",
                 reason: "", // Default reason
-                status: "Node up", // Default status
+                resolution: "Node up", // Default status
             };
           
         }
@@ -54,11 +56,12 @@ function Update(){
             // Update downtime in hh:mm format
             const updatedDowntime = `${time.hours}:${time.minutes}`;
             selectedBankData.downtime = updatedDowntime;
-            selectedBankData.status = resolution;
+            selectedBankData.resolution = resolution;
+            selectedBankData.reason = reason; 
 
              ///error message
             const selectedErrorMessage = data.status.find(error => error.code === selectedError)?.message || '';
-            selectedBankData.reason = selectedErrorMessage;
+            selectedBankData.status = selectedErrorMessage;
 
 
             if(selectedError === "suc"){
@@ -76,7 +79,7 @@ function Update(){
                     upbanks[existingBankIndex] = selectedBankData;
                 } else {
                     // Add the selected bank to upbanks
-                    upbanks.push(selectedBankData);
+                    upbanks.unshift(selectedBankData);
                 }
               
                 //save
@@ -101,7 +104,7 @@ function Update(){
                 } else {
                     
                     // Add the selected bank to downbanks
-                    downbanks.push(selectedBankData);
+                    downbanks.unshift(selectedBankData);
                 }
 
                 localStorage.setItem("upbanks", JSON.stringify(upbanks));
@@ -116,6 +119,7 @@ function Update(){
             setSelectedError("");
             setTime({ hours: "00", minutes: "00" });
             setResolution("NIP");
+            setReason("None");
 
             alert("Bank updated and moved to downbanks successfully!");
 
@@ -214,6 +218,21 @@ function Update(){
                             <option value="NIP">NIP</option>
                             <option value="Node down">Node down</option>
                             <option value="Node up">Node up</option>
+                            </select>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Reason</label>
+                            <select
+                            value={reason}
+                            onChange={(e) => setReason(e.target.value)}
+                            >
+                            <option value="None">Select Reason</option>
+                            {data.reason.map((item, index) =>(
+                                <option key={index} value={item.message}>
+                                    {item.message}
+                                </option>
+                            ))}
                             </select>
                         </div>
 

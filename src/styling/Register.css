@@ -1,0 +1,134 @@
+/* General Styles */
+.Login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+  
+  /* Container Styles */
+  .container {
+    width: auto;
+    display:flex;
+    flex-direction: row;
+    margin: auto;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  /* Left Image Section */
+  .signin-image {
+    flex: 1;
+    /* background: #f0f0f0; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .signin-image img {
+    width: 80%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  /* Right Form Section */
+  .signin-form {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .form-title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .center-align {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .center-align span {
+    color: #007bff;
+  }
+  
+  .form-group-login {
+    margin-bottom: 20px;
+    position: relative;
+  }
+  
+  .form-group-login label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #666;
+  }
+  
+  .form-group-login input {
+    /* width: 100%; */
+    padding: 10px 40px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    font-size: 16px;
+  }
+
+  .icon {
+    position: absolute;
+    left: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-size: 18px;
+  }
+  
+  .form-group-login input:focus {
+    border-color: #007bff;
+  }
+  
+  .form-group-login input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+  }
+  
+  .label-agree-term {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .form-button {
+    text-align: center;
+  }
+  
+  .form-button input {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .form-button input:hover {
+    background: #0056b3;
+  }
+  
+  .remember-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .label-login {
+    margin-bottom: 0px;
+  }
