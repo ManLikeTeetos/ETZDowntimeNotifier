@@ -1,249 +1,235 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import data from "../components/data.json";
 import "../styling/Update.css";
+import axios from "axios";
 
+function Update() {
+  const [selectedBank, setSelectedBank] = useState("");
+  const [type, setType] = useState("FT");
+  const [selectedError, setSelectedError] = useState("");
+  const [time, setTime] = useState({ hours: "00", minutes: "00" });
+  const [resolution, setResolution] = useState("NIP");
+  const [reason, setReason] = useState("None");
+  const [banksData, setBanksData] = useState([]);
+  const [statusData, setStatusData] = useState([]);
+  const [reasonData, setReasonData] = useState([]);
 
-function Update(){
-    const [selectedBank, setSelectedBank] = useState("");
-    const [type, setType] = useState("FT");
-    const [selectedError, setSelectedError] = useState("");
-    const [time, setTime] = useState({hours: "00", minutes: "00"});
-    const [resolution, setResolution] = useState("NIP");
-    const [reason, setReason] = useState("None");
-   
- 
+  useEffect(() => {
+    const fetchData = async () => {
+      const banksResponse = await fetch(
+        "https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/banks",
+        { method: "GET", headers: { "Content-Type": "application/json" } }
+      );
+      const statusResponse = await fetch(
+        "https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/status",
+        { method: "GET", headers: { "Content-Type": "application/json" } }
+      );
+      const reasonResponse = await fetch(
+        "https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/reasons",
+        { method: "GET", headers: { "Content-Type": "application/json" } }
+      );
 
-//   useEffect(() => {
-//     const savedBanks = JSON.parse(localStorage.getItem('upbanks')) || [];
-    
-//   }, []);
+      if (
+        !banksResponse.ok ||
+        !statusResponse.ok ||
+        !reasonResponse.ok
+      ) {
+        throw new Error("Some API requests failed");
+      }
 
-      // Handle form submission
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log({
-          selectedBank,
-          type,
-          selectedError,
-          time,
-          resolution,
-        });
+      const banksData = await banksResponse.json();
+      const statusData = await statusResponse.json();
+      const reasonData = await reasonResponse.json();
 
-       
+      setBanksData(banksData);
+      setStatusData(statusData);
+      setReasonData(reasonData);
+    };
 
-        //Find selected Bank
-        let selectedBankData = data.banks.find((bank) => bank.bankname === selectedBank && bank.type === type);
+    fetchData();
+  }, []);
 
-        //VT issues
-        if (!selectedBankData) {
-            // Create a new bank entry if it doesn't exist
-            selectedBankData = {
-                bankname: selectedBank,
-                type: type,
-                downtime: "00:00", // Default downtime
-                status:"",
-                reason: "", // Default reason
-                resolution: "Node up", // Default status
-            };
-          
-        }
+  // Validate time function
+  const validateTime = () => {
+    const currentDate = new Date();
+    const currentHours = currentDate.getHours();
+    const currentMinutes = currentDate.getMinutes();
 
-       
-        
-        if(selectedBankData){
+    const selectedHours = parseInt(time.hours, 10);
+    const selectedMinutes = parseInt(time.minutes, 10);
 
-            // Update downtime in hh:mm format
-            const updatedDowntime = `${time.hours}:${time.minutes}`;
-            selectedBankData.downtime = updatedDowntime;
-            selectedBankData.resolution = resolution;
-            selectedBankData.reason = reason; 
+    if (selectedHours > currentHours || (selectedHours === currentHours && selectedMinutes > currentMinutes)) {
+      return false; // Time is greater than the current time
+    }
+    return true;
+  };
 
-             ///error message
-            const selectedErrorMessage = data.status.find(error => error.code === selectedError)?.message || '';
-            selectedBankData.status = selectedErrorMessage;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    if (!validateTime()) {
+      alert("The selected time cannot be in the future.");
+      return; // Prevent form submission if time is invalid
+    }
 
-            if(selectedError === "suc"){
-                let downbanks = JSON.parse(localStorage.getItem("downbanks")) || [];
-                downbanks = downbanks.filter((item) => item.bankname !== selectedBank || item.type !== type);
+    const timeString = `${time.hours}:${time.minutes}`;
+    let requestBody;
 
-                // console.log("i am here", downbanks);
-                // debugger;
-
-                 // Update or add the bank to upbanks
-                const upbanks = JSON.parse(localStorage.getItem("upbanks")) || [];
-                const existingBankIndex = upbanks.findIndex(item => item.bankname === selectedBank && item.type === selectedBankData.type);
-                if (existingBankIndex !== -1) {
-                    // Update the existing bank in upbanks
-                    upbanks[existingBankIndex] = selectedBankData;
-                } else {
-                    // Add the selected bank to upbanks
-                    upbanks.unshift(selectedBankData);
-                }
-              
-                //save
-                localStorage.setItem("downbanks", JSON.stringify(downbanks));
-                localStorage.setItem("upbanks", JSON.stringify(upbanks));
-            } else {
-
-                
-                
-                // Handle when selectedError is not "00" (Error)
-                // Remove the selected bank from upbanks if it's there
-                let upbanks = JSON.parse(localStorage.getItem("upbanks")) || [];
-                upbanks = upbanks.filter((item) => item.bankname !== selectedBank || item.type !== type);
-               
-
-                // Update or add the bank to downbanks
-                const downbanks = JSON.parse(localStorage.getItem("downbanks")) || [];
-                const existingDownBankIndex = downbanks.findIndex(item => item.bankname === selectedBank && item.type === selectedBankData.type);
-                if (existingDownBankIndex !== -1) {
-                    // Update the existing bank in downbanks
-                    downbanks[existingDownBankIndex] = selectedBankData;
-                } else {
-                    
-                    // Add the selected bank to downbanks
-                    downbanks.unshift(selectedBankData);
-                }
-
-                localStorage.setItem("upbanks", JSON.stringify(upbanks));
-                localStorage.setItem("downbanks", JSON.stringify(downbanks));
-            } 
-
-           
-
-            // Reset the form fields
-            setSelectedBank("");
-            setType("FT");
-            setSelectedError("");
-            setTime({ hours: "00", minutes: "00" });
-            setResolution("NIP");
-            setReason("None");
-
-            alert("Bank updated and moved to downbanks successfully!");
-
-
-        }
+    if (selectedError === "00") {
+      // Success case (sending uptime)
+      requestBody = {
+        bankname: selectedBank,
+        uptime: timeString,
+        status: "Successful",
+        reason: reason,
+        resolution: resolution,
       };
+    } else {
+      // Error case (sending downtime)
+      requestBody = {
+        bankname: selectedBank,
+        downtime: timeString,
+        type: type,
+        status: "Error", // Assuming error status here
+        reason: reason,
+        resolution: resolution,
+      };
+    }
 
+    try {
+      const response = await axios.post(
+        "https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/bank-status/add",
+        requestBody,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Response:", response.data);
+      alert("Bank status updated successfully!");
+      // Reset form
+      setSelectedBank("");
+      setType("FT");
+      setSelectedError("");
+      setTime({ hours: "00", minutes: "00" });
+      setResolution("NIP");
+      setReason("None");
+    } catch (error) {
+      console.error("Error updating bank status:", error);
+      alert("Failed to update bank status.");
+    }
+  };
 
+  return (
+    <div>
+      <Navbar />
+      <div className="Update">
+        <div className="form-container">
+          <form className="form-inner" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Bank Name</label>
+              <select
+                value={selectedBank}
+                onChange={(e) => setSelectedBank(e.target.value)}
+              >
+                <option value="">Select Bank</option>
+                {banksData.map((bank) => (
+                  <option key={bank.id} value={bank.bankname}>
+                    {bank.bankname}
+                  </option>
+                ))}
+              </select>
+            </div>
 
+            <div className="form-group">
+              <label>Type</label>
+              <select
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+              >
+                <option value="FT">FT</option>
+                <option value="VT">VT</option>
+              </select>
+            </div>
 
-    return (
-        <div>
-            <Navbar/>
-            <div className="Update">
-                <div className="form-container">
-                    {/* <h2>Update Bank Status</h2> */}
-                    <form className="form-inner" onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label>Bank Name</label>
-                            <select
-                            value={selectedBank}
-                            onChange={(e) => setSelectedBank(e.target.value)}
-                            >
-                            <option value="">Select Bank</option>
-                            {data.banks.map((bank) => (
-                                <option key={bank.id} value={bank.bankname}>
-                                {bank.bankname}
-                                </option>
-                            ))}
-                            </select>
-                        </div>
+            <div className="form-group">
+              <label>Error</label>
+              <select
+                value={selectedError}
+                onChange={(e) => setSelectedError(e.target.value)}
+              >
+                <option value="">Select Error</option>
+                {statusData.map((status) => (
+                  <option key={status.code} value={status.code}>
+                    {status.message}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-                        <div className="form-group">
-                            <label>Type</label>
-                            <select
-                            value={type}
-                            onChange={(e) => setType(e.target.value)}
-                            >
-                            <option value="FT">FT</option>
-                            <option value="VT">VT</option>
-                            </select>
-                        </div>
+            <div className="form-group">
+              <label>Time</label>
+              <div className="time-inputs">
+                <select
+                  value={time.hours}
+                  onChange={(e) => setTime({ ...time, hours: e.target.value })}
+                >
+                  {[...Array(24).keys()].map((h) => (
+                    <option key={h} value={String(h).padStart(2, "0")}>
+                      {String(h).padStart(2, "0")}
+                    </option>
+                  ))}
+                </select>
+                :
+                <select
+                  value={time.minutes}
+                  onChange={(e) => setTime({ ...time, minutes: e.target.value })}
+                >
+                  {[...Array(60).keys()].map((m) => (
+                    <option key={m} value={String(m).padStart(2, "0")}>
+                      {String(m).padStart(2, "0")}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
 
-                        <div className="form-group">
-                            <label>Error</label>
-                            <select
-                            value={selectedError}
-                            onChange={(e) => setSelectedError(e.target.value)}
-                            >
-                            <option value="">Select Error</option>
-                            {data.status.map((status) => (
-                                <option key={status.code} value={status.code}>
-                                {status.message}
-                                </option>
-                            ))}
-                            </select>
-                        </div>
+            <div className="form-group">
+              <label>Resolution</label>
+              <select
+                value={resolution}
+                onChange={(e) => setResolution(e.target.value)}
+              >
+                <option value="NIP">NIP</option>
+                <option value="Node down">Node down</option>
+                <option value="Node up">Node up</option>
+              </select>
+            </div>
 
-                        <div className="form-group">
-                            <label>Time</label>
-                            <div className="time-inputs">
-                            <select
-                                value={time.hours}
-                                onChange={(e) =>
-                                setTime({ ...time, hours: e.target.value })
-                                }
-                            >
-                                {[...Array(24).keys()].map((h) => (
-                                <option key={h} value={String(h).padStart(2, "0")}>
-                                    {String(h).padStart(2, "0")}
-                                </option>
-                                ))}
-                            </select>
-                            :
-                            <select
-                                value={time.minutes}
-                                onChange={(e) =>
-                                setTime({ ...time, minutes: e.target.value })
-                                }
-                            >
-                                {[...Array(60).keys()].map((m) => (
-                                <option key={m} value={String(m).padStart(2, "0")}>
-                                    {String(m).padStart(2, "0")}
-                                </option>
-                                ))}
-                            </select>
-                            </div>
-                        </div>
+            <div className="form-group">
+              <label>Reason</label>
+              <select
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+              >
+                <option value="None">Select Reason</option>
+                {reasonData.map((item, index) => (
+                  <option key={index} value={item.message}>
+                    {item.message}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-                        <div className="form-group">
-                            <label>Resolution</label>
-                            <select
-                            value={resolution}
-                            onChange={(e) => setResolution(e.target.value)}
-                            >
-                            <option value="NIP">NIP</option>
-                            <option value="Node down">Node down</option>
-                            <option value="Node up">Node up</option>
-                            </select>
-                        </div>
-
-                        <div className="form-group">
-                            <label>Reason</label>
-                            <select
-                            value={reason}
-                            onChange={(e) => setReason(e.target.value)}
-                            >
-                            <option value="None">Select Reason</option>
-                            {data.reason.map((item, index) =>(
-                                <option key={index} value={item.message}>
-                                    {item.message}
-                                </option>
-                            ))}
-                            </select>
-                        </div>
-
-                        <button type="submit" className="submit-btn">
-                            Update
-                        </button>
-                    </form>
-                </div>
-            </div>    
+            <button type="submit" className="submit-btn">
+              Update
+            </button>
+          </form>
         </div>
-    )
+      </div>
+    </div>
+  );
 }
 
 export default Update;

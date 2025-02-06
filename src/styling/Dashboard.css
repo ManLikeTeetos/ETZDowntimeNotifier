@@ -46,3 +46,27 @@ table {
   .downbanks {
     margin-bottom : 60px;
   }
+
+  .date-picker {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .date-input {
+    width: 20%;
+    margin-bottom: 0px;
+  }
+
+  .pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 0px;
+  }
+
+  .pagination-btn {
+    width: 20% !important;
+  }

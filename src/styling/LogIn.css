@@ -57,6 +57,10 @@
   .center-align span {
     color: #007bff;
   }
+
+  .form-input {
+    width: auto;
+  }
   
   .form-group-login {
     margin-bottom: 20px;

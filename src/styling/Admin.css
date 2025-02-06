@@ -1,0 +1,103 @@
+/* Center the form and make it look nice */
+.Admin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 60px;
+    /* height: 100vh; */
+    background-color: #f4f4f4;
+}
+
+.form-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    border: 2px solid black;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 450px;
+    font-family: 'Roboto', sans-serif;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Flexbox grid layout for form fields */
+.form-container form {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns layout */
+    gap: 20px; /* Space between the columns */
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Label styling */
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+/* Styling for input fields and buttons */
+input,
+button,
+select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid black;
+    border-radius: 4px;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Time input styling (if applicable) */
+.time-inputs {
+    display: flex;
+    justify-content: space-between;
+}
+
+.time-inputs select {
+    width: 45%;
+}
+
+/* Submit button styling */
+.submit-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    grid-column: span 2; /* Make the submit button span two columns */
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Styling for the list of banks, status codes, and reasons */
+.list-container {
+    margin-top: 20px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}

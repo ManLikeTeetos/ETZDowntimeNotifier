@@ -37,6 +37,7 @@ const LogIn = () => {
         if (response.ok && data.message === "Login Successful") {
           // Registration was successful, navigate to the dashboard
           setSuccess("Login Successful")
+          localStorage.setItem("email", email); // Save email to localStorage
           navigate("/dashboard");
         } else {
           // Handle failure (invalid input, user already exists, etc.)
