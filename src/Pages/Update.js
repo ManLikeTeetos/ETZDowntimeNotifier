@@ -90,7 +90,7 @@ function Update() {
         bankname: selectedBank,
         downtime: timeString,
         type: type,
-        status: "Error", // Assuming error status here
+        status: selectedError, // Assuming error status here
         reason: reason,
         resolution: resolution,
       };
@@ -150,6 +150,7 @@ function Update() {
               >
                 <option value="FT">FT</option>
                 <option value="VT">VT</option>
+                <option value="VT">EITS</option>
               </select>
             </div>
 
@@ -161,7 +162,7 @@ function Update() {
               >
                 <option value="">Select Error</option>
                 {statusData.map((status) => (
-                  <option key={status.code} value={status.code}>
+                  <option key={status.code} value={status.message}>
                     {status.message}
                   </option>
                 ))}

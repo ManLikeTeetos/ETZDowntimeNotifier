@@ -4,26 +4,40 @@ import "../styling/Dashboard.css";
 import Down from "../images/down.png";
 import UP from "../images/up.png";
 
-const Row = ({ id, logo, bankname, type, downtime, uptime, status, reason, resolution, onDelete }) => {
-  const formatTimeDifference = (downtime) => {
-    const [hours, minutes] = downtime.split(":").map(Number);
+const Row = ({ id, logo, bankname, type, downtime, uptime, status, reason, resolution, dateCreated, onDelete }) => {
+  const formatTimeDifference = (time, createdAt) => {
+    const [hours, minutes] = time.split(":").map(Number);
     if (isNaN(hours) || isNaN(minutes)) {
       return "Invalid format";
     }
 
     const now = new Date();
-    const downtimeDate = new Date(now);
-    downtimeDate.setHours(hours, minutes, 0, 0);
+    const createdDate = new Date(createdAt); // Convert dateCreated to a Date object
 
-    if (downtimeDate > now) {
-      downtimeDate.setDate(downtimeDate.getDate() - 1);
+    // Set the provided downtime time on the createdDate
+    createdDate.setHours(hours, minutes, 0, 0);
+
+    if (createdDate > now) {
+      createdDate.setDate(createdDate.getDate() - 1);
     }
 
-    const diffMilliseconds = now - downtimeDate;
+    // Calculate difference in full days between createdDate and today
+    const dateDiffDays = Math.floor((now - createdDate) / (1000 * 60 * 60 * 24));
+
+    const diffMilliseconds = now - createdDate;
     const diffHours = Math.floor(diffMilliseconds / (1000 * 60 * 60));
     const diffMinutes = Math.floor((diffMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
 
-    return diffHours > 0 ? `${diffHours}hrs ${diffMinutes}min` : `${diffMinutes}min`;
+    // Add extra hours from full days difference
+    const totalHours = diffHours + dateDiffDays * 24;
+
+    return totalHours > 0 ? `${totalHours}hrs ${diffMinutes}min` : `${diffMinutes}min`;
+  };
+
+  // Format dateCreated to display as "YYYY-MM-DD HH:mm:ss"
+  const formatDateTime = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString(); // Formats based on user's locale
   };
 
   // Set type to 'FT' if not specified
@@ -36,11 +50,12 @@ const Row = ({ id, logo, bankname, type, downtime, uptime, status, reason, resol
       </td>
       <td>{bankname}</td>
       <td>{displayType}</td> {/* Use displayType here */}
-      <td>{downtime === "00:00" ? "N/A" : downtime}</td>
-      <td>{formatTimeDifference(downtime)}</td>
+      <td>{uptime && uptime !== "00:00" ? uptime : downtime === "00:00" ? "N/A" : downtime}</td>
+      <td>{uptime !== "00:00" ? formatTimeDifference(uptime, dateCreated) : formatTimeDifference(downtime, dateCreated)}</td>
       <td>{status}</td>
       <td>{reason}</td>
       <td>{resolution}</td>
+      <td>{status === "Up" ? "00:00" : formatDateTime(dateCreated)}</td> {/* Show "00:00" for Upbanks */}
       {/* Only keep delete button in Down Banks */}
       {onDelete && (
         <td>
@@ -50,6 +65,8 @@ const Row = ({ id, logo, bankname, type, downtime, uptime, status, reason, resol
     </tr>
   );
 };
+
+
 
 function Dashboard() {
   const [downBanksData, setDownBanksData] = useState([]);
@@ -106,10 +123,11 @@ function Dashboard() {
             bankname: bank.bankname,
             logo: UP,
             downtime: "00:00",
-            uptime: new Date().toISOString(),
+            uptime: "00:00",
             status: "Up",
             reason: "None",
             resolution: "Node up",
+            dateCreated: new Date().toISOString().split("T")[0] // Formats as "YYYY-MM-DD"
           });
         }
       });
@@ -184,6 +202,7 @@ function Dashboard() {
                 <th>Status</th>
                 <th>Reason</th>
                 <th>Resolution</th>
+                <th>Date Created</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -215,6 +234,7 @@ function Dashboard() {
                 <th>Status</th>
                 <th>Reason</th>
                 <th>Resolution</th>
+                <th>Date Created</th>
               </tr>
             </thead>
             <tbody>

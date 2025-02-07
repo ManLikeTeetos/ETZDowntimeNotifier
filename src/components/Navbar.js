@@ -30,6 +30,7 @@ function Navbar() {
       </div>
       <div className="Menu">
         <Link to="/dashboard"><h1>Dashboard</h1></Link>
+        <Link to="/report"><h1>Report</h1></Link>
         <Link to="/update"><h1>Update</h1></Link>
         <Link to="/admin"><h1>Admin</h1></Link>
         <h1 onClick={Signout}>Sign out</h1>
