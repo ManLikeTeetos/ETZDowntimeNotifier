@@ -75,7 +75,7 @@ function Update() {
     const timeString = `${time.hours}:${time.minutes}`;
     let requestBody;
 
-    if (selectedError === "00") {
+    if (selectedError === "Successful") {
       // Success case (sending uptime)
       requestBody = {
         bankname: selectedBank,

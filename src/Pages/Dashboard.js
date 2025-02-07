@@ -52,9 +52,10 @@ const Row = ({ id, logo, bankname, type, downtime, uptime, status, reason, resol
       <td>{displayType}</td> {/* Use displayType here */}
       <td>{uptime && uptime !== "00:00" ? uptime : downtime === "00:00" ? "N/A" : downtime}</td>
       <td>{uptime !== "00:00" ? formatTimeDifference(uptime, dateCreated) : formatTimeDifference(downtime, dateCreated)}</td>
-      <td>{status}</td>
-      <td>{reason}</td>
-      <td>{resolution}</td>
+      <td>{uptime !== "00:00" ? "Successful" : status}</td>
+      <td>{uptime !== "00:00" ? "None" : reason}</td>
+      <td>{uptime !== "00:00" ? "Node Up" : resolution}</td>
+
       <td>{status === "Up" ? "00:00" : formatDateTime(dateCreated)}</td> {/* Show "00:00" for Upbanks */}
       {/* Only keep delete button in Down Banks */}
       {onDelete && (
@@ -133,6 +134,17 @@ function Dashboard() {
       });
   
       setDownBanksData(downBanks);
+      // Sort upBanks to have the latest uptime entry at the top
+      // Sort upBanks: Banks with uptime !== "00:00" first, then by latest uptime
+      upBanks.sort((a, b) => {
+        if (a.uptime !== "00:00" && b.uptime === "00:00") return -1; // a comes first
+        if (a.uptime === "00:00" && b.uptime !== "00:00") return 1;  // b comes first
+
+        // If both have non-zero uptime, sort by latest uptime
+        const dateA = new Date(`${a.dateCreated}T${a.uptime}`);
+        const dateB = new Date(`${b.dateCreated}T${b.uptime}`);
+        return dateB - dateA; // Descending order (latest uptime first)
+      });
       setUpBanksData(upBanks);
     } catch (error) {
       console.error("Error fetching data:", error);
