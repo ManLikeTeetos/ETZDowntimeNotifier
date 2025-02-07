@@ -44,10 +44,10 @@ const Row = ({ id, bankname, type, downtime, uptime, reason, dateCreated, onDele
     <td>{bankname}</td>
     <td>{type || 'FT'}</td>
     <td>{downtime}</td>
-    <td>{uptime}</td>
+    <td>{ uptime !== "00:00" ? uptime : "----"}</td>
     <td>{formatTimeDifference(downtime, uptime, dateCreated)}</td>
     <td>{reason}</td>
-    <td>{uptime !== "00:00" ? "Resolved" : "On-going"} </td>
+    <td>{uptime !== "00:00" ? "Resolved" : "Pending"} </td>
     
     {onDelete && (
       <td>
