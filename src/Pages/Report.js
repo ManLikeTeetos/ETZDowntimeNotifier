@@ -112,8 +112,8 @@ function Report() {
         "Start Time": downtime,
         "End Time": uptime !== "00:00" ? uptime : "----",
         "Duration": formatTimeDifference(downtime, uptime, dateCreated),
-        "Reason": uptime !== "00:00" ? "None" : reason,
-        "Status":  uptime !== "00:00" ? "Resolved" : "On-going",
+        "Reason": reason,
+        "Status":  uptime !== "00:00" ? "Resolved" : "Pending",
       }))
     );
     const workbook = XLSX.utils.book_new();
