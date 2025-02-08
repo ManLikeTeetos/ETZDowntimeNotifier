@@ -79,6 +79,7 @@ function Update() {
       // Success case (sending uptime)
       requestBody = {
         bankname: selectedBank,
+        type: type,
         uptime: timeString,
         status: "Successful",
         reason: reason,
@@ -150,7 +151,7 @@ function Update() {
               >
                 <option value="FT">FT</option>
                 <option value="VT">VT</option>
-                <option value="VT">EITS</option>
+                <option value="EITS">EITS</option>
               </select>
             </div>
 

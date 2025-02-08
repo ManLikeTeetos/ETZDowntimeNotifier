@@ -3,10 +3,10 @@ import Navbar from "../components/Navbar";
 import "../styling/Dashboard.css";
 import * as XLSX from "xlsx";
 
-const formatTimeDifference = (downtime, uptime, createdAt) => {
+const formatTimeDifference = (downtime, uptime, createdAt, allData, bankname) => {
   const parseTime = (time) => {
     if (!time) return null;
-    const [hours, minutes] = time.split(":" ).map(Number);
+    const [hours, minutes] = time.split(":").map(Number);
     return isNaN(hours) || isNaN(minutes) ? null : { hours, minutes };
   };
 
@@ -15,40 +15,59 @@ const formatTimeDifference = (downtime, uptime, createdAt) => {
 
   if (!downtimeParsed) return "Invalid format";
 
-  const now = new Date();
   const createdDate = new Date(createdAt);
   createdDate.setHours(downtimeParsed.hours, downtimeParsed.minutes, 0, 0);
 
   if (uptimeParsed && uptime !== "00:00") {
-    const downtimeDate = new Date(createdDate);
-    const uptimeDate = new Date();
+    const uptimeDate = new Date(createdDate);
     uptimeDate.setHours(uptimeParsed.hours, uptimeParsed.minutes, 0, 0);
-    if (uptimeDate < downtimeDate) uptimeDate.setDate(uptimeDate.getDate() + 1);
+    if (uptimeDate < createdDate) uptimeDate.setDate(uptimeDate.getDate() + 1);
 
-    const diffMilliseconds = uptimeDate - downtimeDate;
+    const diffMilliseconds = uptimeDate - createdDate;
     const diffHours = Math.floor(diffMilliseconds / (1000 * 60 * 60));
     const diffMinutes = Math.floor((diffMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
     return diffHours > 0 ? `${diffHours}hrs ${diffMinutes}min` : `${diffMinutes}min`;
   }
 
+  // Find the next uptime entry for the same bank on a later date
+  const nextUptimeEntry = allData.find(entry => 
+    entry.bankname === bankname && 
+    new Date(entry.dateCreated) > createdDate && 
+    entry.uptime !== "00:00"
+  );
+
+  if (nextUptimeEntry) {
+    const nextUptimeDate = new Date(nextUptimeEntry.dateCreated);
+    nextUptimeDate.setHours(0, 0, 0, 0); // Set to the start of the day when uptime was recorded
+
+    const diffMilliseconds = nextUptimeDate - createdDate;
+    const diffHours = Math.floor(diffMilliseconds / (1000 * 60 * 60));
+    const diffMinutes = Math.floor((diffMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
+    return diffHours > 0 ? `${diffHours}hrs ${diffMinutes}min` : `${diffMinutes}min`;
+  }
+
+  // If no uptime, calculate difference between current time and downtime
+  const now = new Date();
   if (createdDate > now) createdDate.setDate(createdDate.getDate() - 1);
+
   const diffMilliseconds = now - createdDate;
   const diffHours = Math.floor(diffMilliseconds / (1000 * 60 * 60));
   const diffMinutes = Math.floor((diffMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
   return diffHours > 0 ? `${diffHours}hrs ${diffMinutes}min` : `${diffMinutes}min`;
 };
 
-const Row = ({ id, bankname, type, downtime, uptime, reason, dateCreated, onDelete }) => (
+
+
+const Row = ({ id, bankname, type, downtime, uptime, reason, dateCreated, allData, onDelete }) => (
   <tr>
-     <td>{new Date(dateCreated).toISOString().split("T")[0]}</td>
+    <td>{new Date(dateCreated).toISOString().split("T")[0]}</td>
     <td>{bankname}</td>
     <td>{type || 'FT'}</td>
-    <td>{downtime}</td>
-    <td>{ uptime !== "00:00" ? uptime : "----"}</td>
-    <td>{formatTimeDifference(downtime, uptime, dateCreated)}</td>
+    <td>{downtime !== "00:00" ? downtime : "WIP"}</td>
+    <td>{uptime !== "00:00" ? uptime : "WIP"}</td>
+    <td>{formatTimeDifference(downtime, uptime, dateCreated, allData, bankname)}</td>
     <td>{reason}</td>
-    <td>{uptime !== "00:00" ? "Resolved" : "Pending"} </td>
-    
+    <td>{uptime !== "00:00" ? "Resolved" : "Pending"}</td>
     {onDelete && (
       <td>
         <button className="delete-btn" onClick={() => onDelete(id)}>Delete</button>
@@ -110,7 +129,7 @@ function Report() {
         "Bank Name": bankname,
         "Type": type || 'FT',
         "Start Time": downtime,
-        "End Time": uptime !== "00:00" ? uptime : "----",
+        "End Time": uptime !== "00:00" ? uptime : "",
         "Duration": formatTimeDifference(downtime, uptime, dateCreated),
         "Reason": reason,
         "Status":  uptime !== "00:00" ? "Resolved" : "Pending",
@@ -152,7 +171,7 @@ function Report() {
             </thead>
             <tbody>
               {downBanksData.length > 0 ? (
-                downBanksData.map((row) => <Row key={row.id} {...row} onDelete={handleDelete} />)
+                downBanksData.map((row) => <Row key={row.id} {...row} allData={downBanksData} onDelete={handleDelete} />)
               ) : (
                 <tr><td colSpan="8">No bank is currently down</td></tr>
               )}

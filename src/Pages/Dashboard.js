@@ -37,7 +37,7 @@ const Row = ({ id, logo, bankname, type, downtime, uptime, status, reason, resol
   // Format dateCreated to display as "YYYY-MM-DD HH:mm:ss"
   const formatDateTime = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleString(); // Formats based on user's locale
+    return date.toISOString().split("T")[0]; // Formats based on user's locale
   };
 
   // Set type to 'FT' if not specified
