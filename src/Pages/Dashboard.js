@@ -4,7 +4,7 @@ import "../styling/Dashboard.css";
 import Down from "../images/down.png";
 import UP from "../images/up.png";
 
-const Row = ({ id, logo, bankname, type, downtime, uptime, status, reason, resolution, dateCreated, onDelete }) => {
+const Row = ({ id, logo, bankname, type, downtime, uptime, status, reason, username, resolution, dateCreated, onDelete }) => {
   const formatTimeDifference = (time, createdAt) => {
     const [hours, minutes] = time.split(":").map(Number);
     if (isNaN(hours) || isNaN(minutes)) {
@@ -55,6 +55,7 @@ const Row = ({ id, logo, bankname, type, downtime, uptime, status, reason, resol
       <td>{uptime !== "00:00" ? "Successful" : status}</td>
       <td>{uptime !== "00:00" ? "None" : reason}</td>
       <td>{uptime !== "00:00" ? "Node Up" : resolution}</td>
+      <td>{username} </td>
 
       <td>{status === "Up" ? "00:00" : formatDateTime(dateCreated)}</td> {/* Show "00:00" for Upbanks */}
       {/* Only keep delete button in Down Banks */}
@@ -214,6 +215,7 @@ function Dashboard() {
                 <th>Status</th>
                 <th>Reason</th>
                 <th>Resolution</th>
+                <th>ReportedBy</th>
                 <th>Date Created</th>
                 <th>Action</th>
               </tr>
@@ -246,6 +248,7 @@ function Dashboard() {
                 <th>Status</th>
                 <th>Reason</th>
                 <th>Resolution</th>
+                <th>ReportedBy</th>
                 <th>Date Created</th>
               </tr>
             </thead>

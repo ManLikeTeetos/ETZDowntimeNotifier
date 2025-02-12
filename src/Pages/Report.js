@@ -58,7 +58,7 @@ const formatTimeDifference = (downtime, uptime, createdAt, allData, bankname) =>
 
 
 
-const Row = ({ id, bankname, type, downtime, uptime, reason, dateCreated, allData, onDelete }) => (
+const Row = ({ id, bankname, type, downtime, uptime, reason, username, dateCreated, allData, onDelete }) => (
   <tr>
     <td>{new Date(dateCreated).toISOString().split("T")[0]}</td>
     <td>{bankname}</td>
@@ -68,6 +68,7 @@ const Row = ({ id, bankname, type, downtime, uptime, reason, dateCreated, allDat
     <td>{formatTimeDifference(downtime, uptime, dateCreated, allData, bankname)}</td>
     <td>{reason}</td>
     <td>{uptime !== "00:00" ? "Resolved" : "Pending"}</td>
+    <td>{username} </td>
     {onDelete && (
       <td>
         <button className="delete-btn" onClick={() => onDelete(id)}>Delete</button>
@@ -130,7 +131,7 @@ function Report() {
         "Type": type || 'FT',
         "Start Time": downtime,
         "End Time": uptime !== "00:00" ? uptime : "",
-        "Duration": formatTimeDifference(downtime, uptime, dateCreated),
+        "Duration": formatTimeDifference(downtime, uptime, dateCreated, downBanksData, bankname),
         "Reason": reason,
         "Status":  uptime !== "00:00" ? "Resolved" : "Pending",
       }))
@@ -165,7 +166,7 @@ function Report() {
                 <th>Duration</th>
                 <th>Reason</th>
                 <th>Status</th>
-                
+                <th>ReportedBy</th>
                 <th>Action</th>
               </tr>
             </thead>

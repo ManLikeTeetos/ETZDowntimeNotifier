@@ -3,6 +3,8 @@ import Navbar from "../components/Navbar";
 import "../styling/Update.css";
 import axios from "axios";
 
+
+
 function Update() {
   const [selectedBank, setSelectedBank] = useState("");
   const [type, setType] = useState("FT");
@@ -14,7 +16,13 @@ function Update() {
   const [statusData, setStatusData] = useState([]);
   const [reasonData, setReasonData] = useState([]);
 
+
+
+  const username = localStorage.getItem("username"); 
+
   useEffect(() => {
+
+    
     const fetchData = async () => {
       const banksResponse = await fetch(
         "https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/banks",
@@ -84,6 +92,7 @@ function Update() {
         status: "Successful",
         reason: reason,
         resolution: resolution,
+        username : username
       };
     } else {
       // Error case (sending downtime)
@@ -94,6 +103,7 @@ function Update() {
         status: selectedError, // Assuming error status here
         reason: reason,
         resolution: resolution,
+        username : username
       };
     }
 

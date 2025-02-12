@@ -1,0 +1,9 @@
+.RegBody{
+    padding: 40px 60px;
+}
+
+.RegForm{
+    display: flex;
+    margin: auto;
+    width: 50%;
+}

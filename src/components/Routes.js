@@ -3,7 +3,7 @@ import Dashboard from '../Pages/Dashboard';
 import Report from '../Pages/Report';
 import Update from '../Pages/Update';
 import LogIn from '../Pages/LogIn';
-import Register from '../Pages/Register';
+import Register from '../Pages/NewRegister';
 import Admin from '../Pages/Admin';
 
 

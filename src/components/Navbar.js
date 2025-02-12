@@ -8,7 +8,7 @@ function Navbar() {
 
     useEffect(() => {
       // Redirect to login if no email is found in localStorage
-      if (!localStorage.getItem("email")) {
+      if (!localStorage.getItem("username")) {
         navigate("/");
       }
     }, [navigate]);
@@ -20,8 +20,8 @@ function Navbar() {
   };
 
   // Get the email from localStorage and extract the username (before the @ symbol)
-  const email = localStorage.getItem("email");
-  const username = email ? email.split("@")[0] : null;
+  const username = localStorage.getItem("username");
+ 
 
   return (
     <div className="Navbar">
@@ -29,10 +29,10 @@ function Navbar() {
         <h1>Downtime Notifier</h1>
       </div>
       <div className="Menu">
-        <Link to="/dashboard"><h1>Dashboard</h1></Link>
-        <Link to="/report"><h1>Report</h1></Link>
-        <Link to="/update"><h1>Update</h1></Link>
-        <Link to="/admin"><h1>Admin</h1></Link>
+        <Link to="/dashboard" target="_blank" rel="noopener noreferrer"><h1>Dashboard</h1></Link>
+        <Link to="/report" target="_blank" rel="noopener noreferrer"><h1>Report</h1></Link>
+        <Link to="/update" target="_blank" rel="noopener noreferrer"><h1>Update</h1></Link>
+        <Link to="/admin" target="_blank" rel="noopener noreferrer"><h1>Admin</h1></Link>
         <h1 onClick={Signout}>Sign out</h1>
         {username && <h1>Welcome, {username}</h1>} {/* Show username if logged in */}
       </div>

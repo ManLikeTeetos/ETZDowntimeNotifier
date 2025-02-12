@@ -8,7 +8,7 @@ import { Email, Lock } from "@mui/icons-material";
 
 
 const LogIn = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // To store any error messages
   const [success, setSuccess] = useState(""); // To store success messages
@@ -19,7 +19,7 @@ const LogIn = () => {
       //navigate("/");
       //request body
       const requestBody = {
-        email,
+        username,
         password,
       };
 
@@ -37,7 +37,10 @@ const LogIn = () => {
         if (response.ok && data.message === "Login Successful") {
           // Registration was successful, navigate to the dashboard
           setSuccess("Login Successful")
-          localStorage.setItem("email", email); // Save email to localStorage
+          
+          // Store full user details in localStorage
+          localStorage.setItem("user", JSON.stringify(data));
+          localStorage.setItem("username", username); // Save username to localStorage
           navigate("/dashboard");
         } else {
           // Handle failure (invalid input, user already exists, etc.)
@@ -70,11 +73,11 @@ const LogIn = () => {
           <Email className="icon" />
           <input
             type="text"
-            name="email"
-            value={email}
-            placeholder="Your Email"
+            name="username"
+            value={username}
+            placeholder="Your Username"
             className="form-input"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </div>
         <div className="form-group-login">
