@@ -162,6 +162,7 @@ function Update() {
                 <option value="FT">FT</option>
                 <option value="VT">VT</option>
                 <option value="EITS">EITS</option>
+                <option value="Inward">Inward</option>
               </select>
             </div>
 
