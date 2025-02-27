@@ -3,6 +3,7 @@ import Dashboard from '../Pages/Dashboard';
 import Report from '../Pages/Report';
 import Update from '../Pages/Update';
 import LogIn from '../Pages/LogIn';
+import NewLogin from '../Pages/NewLogin';
 import Register from '../Pages/NewRegister';
 import Admin from '../Pages/Admin';
 
@@ -15,6 +16,7 @@ function Routing(){
             <Route path="/report" element={<Report/>}/>
             <Route path="/update" element={<Update/>}/>
             <Route path="/login" element={<LogIn/>}/>
+            <Route path="/newlogin" element={<NewLogin/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/admin" element={<Admin/>}/>
         </Routes>
