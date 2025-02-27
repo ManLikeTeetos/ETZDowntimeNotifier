@@ -37,14 +37,14 @@ const NewLogin = () => {
         if (response.ok && data.message === "Login Successful") {
           // Registration was successful, navigate to the dashboard
           setSuccess("Login Successful")
-          
+
           // Store full user details in localStorage
           localStorage.setItem("user", JSON.stringify(data));
           localStorage.setItem("username", username); // Save username to localStorage
           navigate("/dashboard");
         } else {
           // Handle failure (invalid input, user already exists, etc.)
-         
+
           setError(data.message || "Invalid Credentials");
         }
      // }catch(error) {
@@ -60,13 +60,13 @@ const NewLogin = () => {
         <div className="container-login">
             <h2 className="form-title">Log Your Incidence</h2>
             <div className="signin-form">
-                
+
                 {/* <div className="center-align">
                 <span>"You have been logged out successfully"</span>
                 </div> */}
                 <form className="register-form" id="login-form" onSubmit={handleSubmit}>
-                <div className="form-group-login">
-                    <Email className="icon" />
+                <div className="form-input">
+                   <label>Email Address</label>
                     <input
                         type="text"
                         name="username"
@@ -76,8 +76,8 @@ const NewLogin = () => {
                         onChange={(e) => setUsername(e.target.value)}
                     />
                     </div>
-                <div className="form-group-login">
-                    <Lock className="icon" />
+                <div className="form-input">
+                   <label>Password</label>
                     <input
                         type="password"
                         name="password"
@@ -87,22 +87,22 @@ const NewLogin = () => {
                         onChange={(e) =>setPassword(e.target.value)}
                     />
                 </div>
-                <div className="remember-section">
+                {/* <div className="remember-section">
                     <input type="checkbox" name="remember-me" id="remember-me" className="agree-term" />
                     <label htmlFor="remember-me" className="label-agree-term label-login">
                     <span></span>Remember me on this computer
                     </label>
-                </div>
+                </div> */}
                 {success && <p style={{ color: "green" }}>{success}</p>}
                 {error && <p style={{ color: "red" }}>{error}</p>}
                 <div className="form-button">
-                    <input type="submit" name="signin" id="signin" className="form-submit" value="Log in" />
+                    <button type="submit" name="signin" id="signin" className="form-submit"> Sign-In </button>
                 </div>
                 </form>
             </div>
         </div>
     </div>
-    
+
   );
 };
 
