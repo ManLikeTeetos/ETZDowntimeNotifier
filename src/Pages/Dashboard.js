@@ -86,6 +86,17 @@ function Dashboard() {
   
 
   const fetchBankStatusByDate = async () => {
+    if (!startDate || !endDate) {
+      alert("Please select both start and end dates.");
+      return;
+    }
+  
+    if (new Date(startDate) > new Date(endDate)) {
+      alert("Start date cannot be greater than end date.");
+      setStartDate(endDate);
+      return;
+    }
+
     setLoading(true);
     try {
       const bankStatusResponse = await fetch(
