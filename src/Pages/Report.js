@@ -82,7 +82,9 @@ function Report() {
   const [currentPage, setCurrentPage] = useState(0);
   const currentDate = new Date().toISOString().split("T")[0];
   const [startDate, setStartDate] = useState(currentDate);
+  const [startTime, setStartTime] = useState("00:00");
   const [endDate, setEndDate] = useState(currentDate);
+  const [endTime, setEndTime] = useState("23:59");
   const [loading, setLoading] = useState(false);
   const itemsPerPage = 20;
 
@@ -90,7 +92,7 @@ function Report() {
     setLoading(true);
     try {
       const response = await fetch(
-        `https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/bank-status/by-date?startDate=${startDate}T00:00:00&endDate=${endDate}T23:59:59`
+        `https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/bank-status/by-date?startDate=${startDate}T${startTime}:00&endDate=${endDate}T${endTime}:00`
       );
       if (!response.ok) throw new Error("Failed to fetch data");
       const data = await response.json();
@@ -148,8 +150,10 @@ function Report() {
         <div className="date-picker">
           <label>Start Date:</label>
           <input className="date-input" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+          <input className="date-input" type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
           <label>End Date:</label>
           <input className="date-input" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+          <input className="date-input" type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
           <button className="date-input" onClick={fetchBankStatusByDate} disabled={loading}>{loading ? "Loading..." : "Refresh"}</button>
           <button className="date-input" onClick={exportToExcel}>Export to Excel</button>
         </div>

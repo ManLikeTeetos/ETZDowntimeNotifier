@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Navbar from "../components/Navbar";
 import "../styling/Dashboard.css";
 import Down from "../images/down.png";
@@ -77,9 +77,13 @@ function Dashboard() {
   const currentDate = new Date().toISOString().split("T")[0]; // Format: YYYY-MM-DD
   const [startDate, setStartDate] = useState(currentDate);
   const [endDate, setEndDate] = useState(currentDate);
+  const [refreshInterval, setRefreshInterval] = useState(0);
+  const intervalRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
   const itemsPerPage = 7;
+
+  
 
   const fetchBankStatusByDate = async () => {
     setLoading(true);
@@ -154,6 +158,17 @@ function Dashboard() {
     }
   };
 
+  useEffect(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+
+    if (refreshInterval > 0) {
+      intervalRef.current = setInterval(fetchBankStatusByDate, refreshInterval * 1000);
+    }
+
+    return () => clearInterval(intervalRef.current);
+  }, [refreshInterval]);
  
 
   useEffect(() => {
@@ -195,6 +210,14 @@ function Dashboard() {
           <input className="date-input" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
           <label>End Date:</label>
           <input  className="date-input" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+          <label>Auto Refresh:</label>
+          <select className="date-input" value={refreshInterval} onChange={(e) => setRefreshInterval(Number(e.target.value))}>
+            <option value="0">Off</option>
+            <option value="5">5s</option>
+            <option value="10">10s</option>
+            <option value="30">30s</option>
+            <option value="60">60s</option>
+          </select>
           <button  className="date-input" onClick={fetchBankStatusByDate} disabled={loading}>
             {loading ? "Loading..." : "Refresh"}
           </button>
