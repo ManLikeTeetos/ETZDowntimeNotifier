@@ -51,9 +51,16 @@ const formatTimeDifference = (downtime, uptime, createdAt, allData, bankname) =>
   if (createdDate > now) createdDate.setDate(createdDate.getDate() - 1);
 
   const diffMilliseconds = now - createdDate;
-  const diffHours = Math.floor(diffMilliseconds / (1000 * 60 * 60));
-  const diffMinutes = Math.floor((diffMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
-  return diffHours > 0 ? `${diffHours}hrs ${diffMinutes}min` : `${diffMinutes}min`;
+  const diffDays = Math.floor(diffMilliseconds / (1000 * 60 * 60 * 24));
+  const remainingMilliseconds = diffMilliseconds % (1000 * 60 * 60 * 24); // Remaining time after full days
+  const diffHours = Math.floor(remainingMilliseconds / (1000 * 60 * 60)); // Remaining hours after days
+  const diffMinutes = Math.floor((remainingMilliseconds % (1000 * 60 * 60)) / (1000 * 60)); // Remaining minutes after hours
+  
+  return diffDays > 0 
+    ? `${diffDays}d ${diffHours}hrs ${diffMinutes}min` 
+    : diffHours > 0 
+      ? `${diffHours}hrs ${diffMinutes}min` 
+      : `${diffMinutes}min`;
 };
 
 

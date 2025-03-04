@@ -1,5 +1,5 @@
 
-.Login {
+.NewLogin {
     display: flex;
 	margin-top: 0px;
     flex-direction: column;
@@ -10,14 +10,14 @@
 
 .Logo {
     width: 100%;
-    margin-top: 150px;
+    margin-top: 50px;
     margin-bottom: 68px;
     margin-right: 150px;
     display: flex;
     justify-content:end;
 }
 
-.container-login {
+.new-container-login {
     width: 543px;
     height: 529px;
     display:flex;
@@ -28,7 +28,7 @@
     overflow: hidden;
   }
 
-  .signin-form {
+  .new-signin-form {
     flex: 1;
     padding: 0px 6px;
     display: flex;
@@ -37,7 +37,7 @@
   }
 
 
-  .form-title {
+  .new-form-title {
     height: 40px;
     font-size: 36px;
     font-weight: 700;
@@ -47,20 +47,20 @@
     text-align: start;
   }
 
-  .form-input {
+  .new-form-input {
 	display: flex;
 	flex-direction: column;
 	justify-content: start;
   }
 
-  .form-input label {
+  .new-form-input label {
 	text-align: start;
 	margin-bottom: 0px;
 	font-size: 20px;
 	font-weight: 400;
 	color: #A6A6AA;
   }
-  .form-input input {
+  .new-form-input input {
 	margin-top: 0px;
 	margin-bottom: 47.26px;
 	height: 53px;
@@ -70,7 +70,7 @@
 	padding-bottom: 0px;
   }
 
-  .form-submit{
+  .new-form-submit{
 	width: 528.45px;
 	height: 71px;
 	background-color: #14248F;

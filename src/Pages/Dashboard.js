@@ -21,17 +21,25 @@ const Row = ({ id, logo, bankname, type, downtime, uptime, status, reason, usern
       createdDate.setDate(createdDate.getDate() - 1);
     }
 
-    // Calculate difference in full days between createdDate and today
-    const dateDiffDays = Math.floor((now - createdDate) / (1000 * 60 * 60 * 24));
+   // Calculate difference in full days between createdDate and today
+const dateDiffDays = Math.floor((now - createdDate) / (1000 * 60 * 60 * 24));
 
-    const diffMilliseconds = now - createdDate;
-    const diffHours = Math.floor(diffMilliseconds / (1000 * 60 * 60));
-    const diffMinutes = Math.floor((diffMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
+const diffMilliseconds = now - createdDate;
+const diffHours = Math.floor(diffMilliseconds / (1000 * 60 * 60));
+const diffMinutes = Math.floor((diffMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
 
-    // Add extra hours from full days difference
-    const totalHours = diffHours + dateDiffDays * 24;
+// Calculate total hours including previous days
+const totalHours = diffHours + dateDiffDays * 24;
 
-    return totalHours > 0 ? `${totalHours}hrs ${diffMinutes}min` : `${diffMinutes}min`;
+// Remaining hours after full days are extracted
+const remainingHours = totalHours % 24; 
+
+// Construct the output string
+return dateDiffDays > 0 
+  ? `${dateDiffDays}d ${remainingHours}hrs ${diffMinutes}min`
+  : totalHours > 0 
+    ? `${totalHours}hrs ${diffMinutes}min` 
+    : `${diffMinutes}min`;
   };
 
   // Format dateCreated to display as "YYYY-MM-DD HH:mm:ss"

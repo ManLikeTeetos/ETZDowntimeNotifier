@@ -53,37 +53,37 @@ const NewLogin = () => {
      // }
   }
   return (
-    <div className="Login">
+    <div className="NewLogin">
         <div className="Logo">
             <img src={Logo} alt="Logo" />
         </div>
-        <div className="container-login">
-            <h2 className="form-title">Log Your Incidence</h2>
-            <div className="signin-form">
+        <div className="new-container-login">
+            <h2 className="new-form-title">Log Your Incidence</h2>
+            <div className="new-signin-form">
 
                 {/* <div className="center-align">
                 <span>"You have been logged out successfully"</span>
                 </div> */}
                 <form className="register-form" id="login-form" onSubmit={handleSubmit}>
-                <div className="form-input">
+                <div className="new-form-input">
                    <label>Email Address</label>
                     <input
                         type="text"
                         name="username"
                         value={username}
                         placeholder="Your Username"
-                        className="form-input"
+                        className="new-form-input"
                         onChange={(e) => setUsername(e.target.value)}
                     />
                     </div>
-                <div className="form-input">
+                <div className="new-form-input">
                    <label>Password</label>
                     <input
                         type="password"
                         name="password"
                         value={password}
                         placeholder="Password"
-                        className="form-input"
+                        className="new-form-input"
                         onChange={(e) =>setPassword(e.target.value)}
                     />
                 </div>
@@ -95,8 +95,8 @@ const NewLogin = () => {
                 </div> */}
                 {success && <p style={{ color: "green" }}>{success}</p>}
                 {error && <p style={{ color: "red" }}>{error}</p>}
-                <div className="form-button">
-                    <button type="submit" name="signin" id="signin" className="form-submit"> Sign-In </button>
+                <div className="cdform-button">
+                    <button type="submit" name="signin" id="signin" className="new-form-submit"> Sign-In </button>
                 </div>
                 </form>
             </div>
