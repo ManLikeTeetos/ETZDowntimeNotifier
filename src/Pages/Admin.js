@@ -19,7 +19,7 @@ const Admin = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/data");
+      const response = await fetch("http://172.17.10.95/api/data");
       const data = await response.json();
       setBanks(data.banks);
       setStatuses(data.status);
@@ -41,7 +41,7 @@ const Admin = () => {
       resolution: "Node up", // Default resolution
     };
 
-    const response = await fetch("https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/banks", {
+    const response = await fetch("http://172.17.10.95/api/banks", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(bankData),
@@ -62,7 +62,7 @@ const Admin = () => {
       message: newStatusMessage,
     };
 
-    const response = await fetch("https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/status", {
+    const response = await fetch("http://172.17.10.95/api/status", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(statusData),
@@ -83,7 +83,7 @@ const Admin = () => {
       message: newReason, // Corrected the reason body format
     };
 
-    const response = await fetch("https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/reasons", {
+    const response = await fetch("http://172.17.10.95/api/reasons", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(reasonData),

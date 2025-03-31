@@ -25,7 +25,7 @@ const NewLogin = () => {
 
      // try {
         //Post request to Login
-        const response = await fetch("https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/auth/signin", {
+        const response = await fetch("http://172.17.10.95/auth/signin", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

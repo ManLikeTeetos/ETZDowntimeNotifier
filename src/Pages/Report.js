@@ -109,7 +109,7 @@ function Report() {
     setLoading(true);
     try {
       const response = await fetch(
-        `https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/bank-status/by-date?startDate=${startDate}T${startTime}:00&endDate=${endDate}T${endTime}:00`
+        `http://172.17.10.95/api/bank-status/by-date?startDate=${startDate}T${startTime}:00&endDate=${endDate}T${endTime}:00`
       );
       if (!response.ok) throw new Error("Failed to fetch data");
       const data = await response.json();
@@ -128,7 +128,7 @@ function Report() {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
-        `https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/bank-status/${id}`,
+        `http://172.17.10.95/api/bank-status/${id}`,
         { method: "DELETE" }
       );
       if (response.ok) {

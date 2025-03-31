@@ -25,15 +25,15 @@ function Update() {
     
     const fetchData = async () => {
       const banksResponse = await fetch(
-        "https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/banks",
+        "http://172.17.10.95/api/banks",
         { method: "GET", headers: { "Content-Type": "application/json" } }
       );
       const statusResponse = await fetch(
-        "https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/status",
+        "http://172.17.10.95/api/status",
         { method: "GET", headers: { "Content-Type": "application/json" } }
       );
       const reasonResponse = await fetch(
-        "https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/reasons",
+        "http://172.17.10.95/api/reasons",
         { method: "GET", headers: { "Content-Type": "application/json" } }
       );
 
@@ -109,7 +109,7 @@ function Update() {
 
     try {
       const response = await axios.post(
-        "https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/bank-status/add",
+        "http://172.17.10.95/api/bank-status/add",
         requestBody,
         {
           headers: {

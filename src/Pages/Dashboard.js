@@ -108,10 +108,10 @@ function Dashboard() {
     setLoading(true);
     try {
       const bankStatusResponse = await fetch(
-        `https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/bank-status/by-date?startDate=${startDate}T00:00:00&endDate=${endDate}T23:59:59`
+        `http://172.17.10.95/api/bank-status/by-date?startDate=${startDate}T00:00:00&endDate=${endDate}T23:59:59`
       );
       const banksResponse = await fetch(
-        "https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/banks"
+        "http://172.17.10.95/api/banks"
       );
   
       if (!bankStatusResponse.ok || !banksResponse.ok) {
@@ -197,7 +197,7 @@ function Dashboard() {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
-        `https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/api/bank-status/${id}`,
+        `http://172.17.10.95/api/bank-status/${id}`,
         { method: "DELETE" }
       );
 

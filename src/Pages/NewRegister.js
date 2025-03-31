@@ -17,6 +17,7 @@ function UserRegistration() {
 
   const [message, setMessage] = useState("");
   const navigate = useNavigate(); // Initialize navigate
+  const adminUsername = localStorage.getItem("username");
 
   useEffect(() => {
     const checkAdmin = () => {
@@ -32,13 +33,13 @@ function UserRegistration() {
   }, [navigate]);
 
   const fetchUsers = async () => {
-    const adminUsername = localStorage.getItem("username"); // Get the admin username from local storage
+   // const adminUsername = localStorage.getItem("username"); // Get the admin username from local storage
     if (!adminUsername) {
       console.error("Admin username not found in local storage.");
       return;
     }
     try {
-      const response = await axios.get(`https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/auth/users?adminUsername=${adminUsername}`);
+      const response = await axios.get(`http://172.17.10.95/auth/users?adminUsername=${adminUsername}`);
       setUsers(response.data);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -58,7 +59,7 @@ function UserRegistration() {
     e.preventDefault();
 
     try {
-      const response = await axios.post("https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/auth/register", formData);
+      const response = await axios.post("http://172.17.10.95/auth/register", formData);
       if (response.data.message === "Registration Successful") {
         setMessage("User registered successfully!");
         fetchUsers(); // Refresh users list
@@ -68,6 +69,24 @@ function UserRegistration() {
     } catch (error) {
       console.error("Error registering user:", error);
       setMessage("Failed to register user.");
+    }
+  };
+
+  const handleDelete = async (id) => {
+   
+    try {
+      const response = await fetch(
+        `http://172.17.10.95/auth/users/${id}?adminUsername=${adminUsername}`,
+        { method: "DELETE" }
+      );
+      if (response.ok) {
+        alert("Successfully deleted");
+        fetchUsers();
+      } else {
+        console.error("Failed to delete user");
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
     }
   };
 
@@ -153,6 +172,10 @@ function UserRegistration() {
                 <td>{user.lastname}</td>
                 <td>{user.department}</td>
                 <td>{user.admin ? "Yes" : "No"}</td>
+                  <td>
+                    <button className="delete-btn" onClick={() => handleDelete(user.username)}>Delete</button>
+                  </td>
+
               </tr>
             ))}
           </tbody>

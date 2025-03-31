@@ -42,7 +42,7 @@ const Register = () => {
 
     try {
       const response = await fetch(
-        "https://bookish-capybara-xpqv7wr6q5gf6977-8080.app.github.dev/auth/register",
+        "http://172.17.10.95/auth/register",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
